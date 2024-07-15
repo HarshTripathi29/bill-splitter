@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './features/user/userSlice';
+import groupReducer from './features/group/groupSlice';
 
-const store = configureStore({
+export default configureStore({
     reducer: {
         user: userReducer,
+        group: groupReducer,
     },
 });
-
-export default store;
