@@ -9,6 +9,7 @@ import Dashboard from './components/Dashboard';
 import Groups from './components/Groups';
 import CreateGroup from './components/CreateGroup';
 import About from './components/About';
+import GroupDetail from './components/GroupDetail';
 
 const App = () => {
     return (
@@ -21,6 +22,7 @@ const App = () => {
                     <Route path="/groups" element={<Layout><Groups /></Layout>} />
                     <Route path="/create-group" element={<Layout><CreateGroup /></Layout>} />
                     <Route path="/about" element={<Layout><About /></Layout>} />
+                    <Route path="/groups/:id" element={<Layout><GroupDetail /></Layout>} /> {/* New route */}
                 </Routes>
             </Router>
         </Provider>

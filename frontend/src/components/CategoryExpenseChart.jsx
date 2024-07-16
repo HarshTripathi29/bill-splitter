@@ -25,7 +25,11 @@ const CategoryExpenseChart = () => {
         ],
     };
 
-    return <Doughnut data={data} />;
+    return (
+        <div style={{ width: '500px', height: '500px' }}>
+            <Doughnut data={data} />
+        </div>
+    );
 };
 
 export default CategoryExpenseChart;
