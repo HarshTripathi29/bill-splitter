@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
     return (
-        <div className="mt-4 px-4 max-w-3xl mx-auto">
+        <div className="p-8 max-w-3xl mx-auto bg-cyan-950 text-cyan-50">
             <h1 className="text-4xl font-bold mb-2">Splitter</h1>
             <h2 className="text-2xl mb-2">Build with the MERN stack (MongoDB, Express, React, and NodeJS).</h2>
 

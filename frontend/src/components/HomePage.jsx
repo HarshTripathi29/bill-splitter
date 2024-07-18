@@ -8,8 +8,8 @@ const HomePage = () => {
     return (
         <div>
             <Header />
-            <div className="flex flex-col items-center justify-center min-h-[90vh] text-center bg-white">
-                <div className="text-6xl font-bold text-cyan-900">
+            <div className="flex flex-col items-center pb-8 justify-center min-h-[90vh] text-center bg-cyan-950">
+                <div className="text-6xl font-bold text-cyan-50">
                     Split Bills, not Friendships
                 </div>
                 <img
@@ -17,16 +17,16 @@ const HomePage = () => {
                     alt="Hero"
                     className="w-full max-w-[400px] h-auto mb-1"
                 />
-                <div className="text-xl text-cyan-950 mb-2">
+                <div className="text-xl text-cyan-100 mb-2">
                     Keep track of shared expenses, split bills with friends, and manage your finances effortlessly.
                 </div>
                 <Button
                     variant="contained"
                     color="primary"
                     sx={{
-                        backgroundColor: '#082f49',
+                        backgroundColor: '#075985',
                         '&:hover': {
-                            backgroundColor: '#075985',
+                            backgroundColor: '#34d399',
                         },
                         paddingX: 2,
                         paddingY: 1,
@@ -38,46 +38,46 @@ const HomePage = () => {
                     Get Started
                 </Button>
             </div>
-            <div className="flex flex-col items-center mt-12">
-                <div className="text-4xl font-bold text-cyan-900 m-8">Here's how you do it!</div>
+            <div className="flex flex-col items-center bg-cyan-950">
+                <div className="text-4xl font-bold text-cyan-50 m-8">Here's how you do it!</div>
                 <div className="steps-list relative">
                     <ul className="list-none p-0">
                         <li className="step-item flex items-center mb-8">
-                            <div className="step-number bg-cyan-900 text-white rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <div className="step-number bg-cyan-100 text-cyan-950 rounded-full h-12 w-12 flex items-center justify-center mr-4">
                                 1
                             </div>
-                            <div className="text-lg border border-cyan-900 p-3 rounded-tl-lg rounded-br-lg">Sign up and create an account</div>
+                            <div className="text-lg text-cyan-50 border border-cyan-100 p-3 rounded-tl-lg rounded-br-lg">Sign up and create an account</div>
                         </li>
                         <li className="step-item flex items-center mb-8">
-                            <div className="step-number bg-cyan-900 text-white rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <div className="step-number bg-cyan-100 text-cyan-950 rounded-full h-12 w-12 flex items-center justify-center mr-4">
                                 2
                             </div>
-                            <div className="text-lg  border border-cyan-900 p-3 rounded-tl-lg rounded-br-lg">Create a group and invite friends</div>
+                            <div className="text-lg  text-cyan-50 border border-cyan-100 p-3 rounded-tl-lg rounded-br-lg">Create a group and invite friends</div>
                         </li>
                         <li className="step-item flex items-center mb-8">
-                            <div className="step-number bg-cyan-900 text-white rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <div className="step-number bg-cyan-100 text-cyan-950 rounded-full h-12 w-12 flex items-center justify-center mr-4">
                                 3
                             </div>
-                            <div className="text-lg  border border-cyan-900 p-3 rounded-tl-lg rounded-br-lg">Add expenses and split bills</div>
+                            <div className="text-lg text-cyan-50 border border-cyan-100 p-3 rounded-tl-lg rounded-br-lg">Add expenses and split bills</div>
                         </li>
                         <li className="step-item flex items-center mb-8">
-                            <div className="step-number bg-cyan-900 text-white rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <div className="step-number bg-cyan-100 text-cyan-950 rounded-full h-12 w-12 flex items-center justify-center mr-4">
                                 4
                             </div>
-                            <div className="text-lg  border border-cyan-900 p-3 rounded-tl-lg rounded-br-lg">Settle balances with friends</div>
+                            <div className="text-lg text-cyan-50 border border-cyan-100 p-3 rounded-tl-lg rounded-br-lg">Settle balances with friends</div>
                         </li>
                         <li className="step-item flex items-center mb-8">
-                            <div className="step-number bg-cyan-900 text-white rounded-full h-12 w-12 flex items-center justify-center mr-4">
+                            <div className="step-number bg-cyan-100 text-cyan-950 rounded-full h-12 w-12 flex items-center justify-center mr-4">
                                 5
                             </div>
-                            <div className="text-lg  border border-cyan-900 p-3 rounded-tl-lg rounded-br-lg">Track expenses and get insights</div>
+                            <div className="text-lg text-cyan-50 border border-cyan-100 p-3 rounded-tl-lg rounded-br-lg">Track expenses and get insights</div>
                         </li>
                     </ul>
-                    <div className="absolute top-0 left-6 h-full w-1 bg-cyan-900 thread"></div>
+                    <div className="absolute top-0 left-6 h-full w-1 bg-cyan-100 thread"></div>
                 </div>
             </div>
-            <div className="flex flex-col items-center mt-12">
-                <div className="text-4xl font-bold text-cyan-900 m-8 p-8">Features</div>
+            <div className="flex flex-col items-center pt-12 pb-12 bg-cyan-950">
+                <div className="text-4xl font-bold text-cyan-100 m-8 p-8">Features</div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 max-w-6xl">
                     <div className="feature-card p-6 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                         <div className="feature-icon text-cyan-900 text-4xl mb-4">💳</div>
@@ -123,7 +123,7 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <footer className="flex justify-center items-center mt-12 p-4 bg-cyan-900 text-white">
+            <footer className="flex justify-center items-center p-4 bg-cyan-900 text-white">
                 <DeveloperModeIcon sx={{ mr: 1 }} />
                 Developed by Harsh Tripathi
             </footer>

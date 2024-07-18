@@ -65,10 +65,10 @@ const GroupDetail = () => {
             {!group && <p>No group found</p>}
             {group && (
                 <>
-                    <div className="p-4 border bg-cyan-100 rounded-lg mb-4 shadow-lg">
-                        <h2 className="text-3xl font-bold text-cyan-900 mb-2">{group.name}</h2>
-                        <p className="text-gray-800 mb-2">{group.description}</p>
-                        <p className="text-cyan-800 mb-2 border border-cyan-500 p-2 rounded-lg w-fit text-lg">Members: {members.join(', ')}</p>
+                    <div className="p-4 border bg-cyan-950 rounded-lg mb-4 shadow-lg">
+                        <h2 className="text-3xl font-bold text-cyan-100 mb-2">{group.name}</h2>
+                        <p className="text-gray-200 mb-2">{group.description}</p>
+                        <p className="text-cyan-200 mb-2 border border-cyan-500 p-2 rounded-lg w-fit text-lg">Members: {members.join(', ')}</p>
                         <p className="text-amber-950 mb-2 bg-amber-400 rounded-xl p-2 w-fit">Category: {group.category}</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -86,7 +86,7 @@ const GroupDetail = () => {
                                         </IconButton>
                                     </div>
                                     
-                                    <div className="absolute bottom-4 right-2 w-20 h-20 bg-amber-200 text-amber-950 rounded-full flex items-center justify-center text-white">
+                                    <div className="absolute bottom-4 right-2 w-20 h-20 bg-amber-200 text-amber-950 rounded-full flex items-center justify-center">
                                         <p className="text-sm font-bold">{new Date(expense.date).toLocaleDateString()}</p>
                                     </div>
                                 </div>

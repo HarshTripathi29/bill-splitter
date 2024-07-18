@@ -15,7 +15,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="w-60 h-full bg-cyan-950 text-gray-200 flex flex-col justify-between">
+        <div className="w-60 h-full bg-cyan-950 text-gray-200 flex flex-col justify-between fixed">
             <div className="p-4">
                 <h1 className="text-2xl font-bold m-4 mt-1">Splitter</h1>
                 <ul className="space-y-4">

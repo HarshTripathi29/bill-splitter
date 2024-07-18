@@ -19,8 +19,8 @@ const CreateGroup = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        if (name.startsWith('member')) {
-            const index = parseInt(name.split('-')[1]);
+        if (name.startsWith('member-')) {
+            const index = parseInt(name.split('-')[1], 10);
             const updatedMembers = [...formData.members];
             updatedMembers[index] = value;
             setFormData({ ...formData, members: updatedMembers });
@@ -48,7 +48,7 @@ const CreateGroup = () => {
     };
 
     return (
-        <Container sx={{ mt: 4 , width : '60vw',}}>
+        <Container sx={{ mt: 4, width: '60vw' }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'left', color: '#2c3e50', mb: 1 }}>
                 Create Group
             </Typography>
@@ -58,10 +58,7 @@ const CreateGroup = () => {
                 noValidate
                 sx={{
                     mt: 1,
-
-                    
                     backgroundColor: '#fff',
-                    
                 }}
             >
                 <TextField
@@ -87,16 +84,16 @@ const CreateGroup = () => {
                 {formData.members.map((member, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                         <TextField
-                            // label={Member ${index + 1}}
-                            // name={member-${index}}
+                            label={`Member ${index + 1}`}
+                            name={`member-${index}`}
                             variant="outlined"
                             fullWidth
                             margin="normal"
                             value={member}
                             onChange={handleChange}
-                            sx={{ backgroundColor: '#ffffff', borderRadius: '4px', width : '50vw' }}
+                            sx={{ backgroundColor: '#ffffff', borderRadius: '4px', width: '50vw' }}
                         />
-                        <IconButton onClick={() => handleRemoveMember(index)} sx={{ ml: 1, border:'2px solid red', borderRadius:'4px', padding : '2' }}>
+                        <IconButton onClick={() => handleRemoveMember(index)} sx={{ ml: 1, border: '2px solid red', borderRadius: '4px', padding: 2 }}>
                             <RemoveIcon sx={{ color: '#e74c3c' }} />
                         </IconButton>
                     </Box>
@@ -109,16 +106,6 @@ const CreateGroup = () => {
                     <AddIcon />
                     Add Member
                 </Button>
-                {/* <TextField
-                    label="Currency"
-                    name="currency"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    value={formData.currency}
-                    onChange={handleChange}
-                    sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
-                /> */}
                 <TextField
                     label="Category"
                     name="category"
@@ -129,7 +116,6 @@ const CreateGroup = () => {
                     onChange={handleChange}
                     sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
                 />
-
                 <Button
                     type="submit"
                     variant="contained"
@@ -145,10 +131,7 @@ const CreateGroup = () => {
                     Create
                 </Button>
             </Box>
-            {groupState.status === 'loading' && <Typography sx={{ mt: 2, textAlign: 'center', color: '#e74c3c' }}>Creating group...</Typography>}
-            {groupState.status === 'succeeded' && <Typography sx={{ mt: 2, textAlign: 'center', color: '#27ae60' }}>Group created successfully!</Typography>}
-            {groupState.status === 'failed' && <Typography sx={{ mt: 2, textAlign: 'center', color: '#e74c3c' }}>Error: {groupState.error}</Typography>}
-        </Container>
+                  </Container>
     );
 };
 

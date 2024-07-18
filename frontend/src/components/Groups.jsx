@@ -12,7 +12,7 @@ const Groups = () => {
     const error = useSelector((state) => state.group.error);
     const favoriteGroups = useSelector((state) => state.group.favorites);
     const [showAddExpenseModal, setShowAddExpenseModal] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState(null);
+    const [selectedGroupId, setSelectedGroupId] = useState(null);
 
     useEffect(() => {
         if (groupStatus === 'idle') {
@@ -21,18 +21,21 @@ const Groups = () => {
     }, [groupStatus, dispatch]);
 
     const handleOpenAddExpenseModal = (group) => {
-        setSelectedGroup(group);
+        setSelectedGroupId(group._id); // Corrected function name here
         setShowAddExpenseModal(true);
     };
 
     const handleCloseAddExpenseModal = () => {
         setShowAddExpenseModal(false);
-        setSelectedGroup(null);
+        setSelectedGroupId(null);
     };
 
     const handleToggleFavorite = (groupId) => {
         dispatch(toggleFavoriteGroup(groupId));
     };
+
+    const selectedGroup = groups.find(g => g._id === selectedGroupId);
+    const members = selectedGroup ? selectedGroup.members : [];
 
     return (
         <div className="mt-4 p-4">
@@ -46,7 +49,7 @@ const Groups = () => {
                     <div key={group._id}>
                         <GroupCard
                             group={group}
-                            onAddExpense={handleOpenAddExpenseModal}
+                            onAddExpense={handleOpenAddExpenseModal} // Pass the function reference
                             onToggleFavorite={handleToggleFavorite}
                             isFavorite={favoriteGroups.includes(group._id)}
                         />
@@ -59,6 +62,7 @@ const Groups = () => {
                 groupId={selectedGroup ? selectedGroup._id : null}
                 open={showAddExpenseModal}
                 onClose={handleCloseAddExpenseModal}
+                members={members}
             />
         </div>
     );

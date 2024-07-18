@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Modal, Box, Typography, TextField, Button, Grid, MenuItem } from '@mui/material';
 import { addExpense, updateExpense } from '../features/group/groupSlice';
 
-const AddExpenseModal = ({ groupId, expense, open, onClose }) => {
+const AddExpenseModal = ({ groupId, expense, open, onClose, members }) => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         category: '',
@@ -103,6 +103,7 @@ const AddExpenseModal = ({ groupId, expense, open, onClose }) => {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                select
                                 fullWidth
                                 label="Paid By"
                                 name="paidBy"
@@ -110,7 +111,13 @@ const AddExpenseModal = ({ groupId, expense, open, onClose }) => {
                                 onChange={handleChange}
                                 required
                                 sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
-                            />
+                            >
+                                {members && members.map((member) => (
+                                    <MenuItem key={member} value={member}>
+                                        {member}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                         <Grid item xs={12}>
                             <Button

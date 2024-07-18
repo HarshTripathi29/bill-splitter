@@ -32,8 +32,8 @@ const UserRegister = () => {
 
     return (
         <div className="flex flex-col items-center mt-8">
-            <div className="p-6 border border-gray-300 rounded-lg shadow-md w-full max-w-sm bg-white">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4">Sign Up</h1>
+            <div className="p-6 border border-gray-300 rounded-lg shadow-md w-full max-w-sm bg-cyan-950">
+                <h1 className="text-2xl font-bold text-cyan-50 mb-4">Sign Up</h1>
                 {message && <p className="text-red-500 mb-4">{message}</p>}
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 {loading && <p className="mb-4">Loading...</p>}
@@ -43,41 +43,41 @@ const UserRegister = () => {
                         placeholder="Name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-cyan-950 rounded focus:outline-none focus:border-blue-500"
                     />
                     <input
                         type="email"
                         placeholder="Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-cyan-950 rounded focus:outline-none focus:border-cyan-500"
                     />
                     <input
                         type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-cyan-950 rounded focus:outline-none focus:border-cyan-500"
                     />
                     <input
                         type="password"
                         placeholder="Confirm Password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 bg-cyan-950 rounded focus:outline-none focus:border-cyan-500"
                     />
                     <button
                         type="submit"
-                        className="w-full px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+                        className="w-full px-3 py-2 bg-cyan-800 text-white rounded hover:bg-emerald-600 focus:outline-none"
                     >
                         Sign Up
                     </button>
                 </form>
-                <p className="mt-4 text-center">
+                <p className="mt-4 text-center text-cyan-100">
                     Already registered?{' '}
                     <span
                         onClick={() => navigate('/login')}
-                        className="text-blue-500 cursor-pointer hover:underline"
+                        className="text-red-500 cursor-pointer hover:underline"
                     >
                         Sign in
                     </span>

@@ -67,6 +67,26 @@ export const deleteExpense = createAsyncThunk('group/deleteExpense', async ({ gr
     return { expenseId };
 });
 
+
+export const addFavorite = createAsyncThunk('group/addFavorite', async (groupId, { getState }) => {
+    const state = getState();
+    const { token } = state.user;
+    const response = await axios.post('http://localhost:5000/api/users/favorites', { groupId }, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+});
+
+// Fetch favorite groups
+export const fetchFavorites = createAsyncThunk('group/fetchFavorites', async (_, { getState }) => {
+    const state = getState();
+    const { token } = state.user;
+    const response = await axios.get('/api/users/favorites', {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+});
+
 const groupSlice = createSlice({
     name: 'group',
     initialState: {
@@ -159,7 +179,11 @@ const groupSlice = createSlice({
             })
             .addCase(deleteExpense.fulfilled, (state, action) => {
                 state.selectedGroup.expenses = state.selectedGroup.expenses.filter(expense => expense._id !== action.payload.expenseId);
+            })
+            .addCase(addFavorite.fulfilled, (state, action) => {
+                state.favorites.push(action.meta.arg);
             });
+         
     },
 });
 
