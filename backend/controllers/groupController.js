@@ -1,29 +1,24 @@
 const Group = require('../models/Group');
 const Expense = require('../models/Expense'); // Ensure this line is present
 
+// Controller function to create a new group
 const createGroup = async (req, res) => {
     try {
-        const { name, description, members, category } = req.body;
+        const { name, members } = req.body;
 
-        // Logging the received data for debugging
-        console.log("Creating group with data:", req.body);
+        if (!name || !members) {
+            return res.status(400).json({ message: 'Name and members are required' });
+        }
 
-        const newGroup = new Group({
-            name,
-            description,
-            members,
-            category,
-        });
+        const newGroup = new Group({ name, members });
+        const savedGroup = await newGroup.save();
 
-        await newGroup.save();
-
-        res.status(201).json(newGroup);
+        res.status(201).json(savedGroup);
     } catch (error) {
-        console.error("Error creating group:", error);  // Improved logging
-        res.status(500).json({ message: error.message });
+        console.error('Error creating group:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
-
 
 
 const getAllGroups = async (req, res) => {
