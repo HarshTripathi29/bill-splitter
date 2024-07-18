@@ -62,6 +62,7 @@ const addExpense = async (req, res) => {
 };
 
 
+
 const settleUp = async (req, res) => {
     const { groupId } = req.params;
 
@@ -113,10 +114,45 @@ const getGroupDetails = async (req, res) => {
 };
 
 
+const updateExpense = async (req, res) => {
+    const { category, totalAmount, paidBy } = req.body;
+    try {
+        const updatedExpense = await Expense.findByIdAndUpdate(
+            req.params.expenseId,
+            { category, totalAmount, paidBy },
+            { new: true }
+        );
+        if (!updatedExpense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        res.json(updatedExpense);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+const deleteExpense = async (req, res) => {
+    try {
+        const deletedExpense = await Expense.findByIdAndDelete(req.params.expenseId);
+        if (!deletedExpense) {
+            return res.status(404).json({ error: 'Expense not found' });
+        }
+        await Group.findByIdAndUpdate(req.params.groupId, { $pull: { expenses: req.params.expenseId } });
+        res.json({ message: 'Expense deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 module.exports = {
     createGroup,
     getAllGroups,
     addExpense,
     settleUp,
     getGroupDetails,
+    updateExpense,
+    deleteExpense,
 };
