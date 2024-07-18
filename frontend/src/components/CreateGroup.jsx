@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createGroup } from '../features/group/groupSlice';
 import { TextField, Button, Container, Typography, Box, IconButton } from '@mui/material';
@@ -15,7 +15,16 @@ const CreateGroup = () => {
     });
 
     const dispatch = useDispatch();
-    const groupState = useSelector((state) => state.group);
+    const { userInfo } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (userInfo) {
+            setFormData((prevData) => ({
+                ...prevData,
+                members: [userInfo.name],
+            }));
+        }
+    }, [userInfo]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -93,9 +102,11 @@ const CreateGroup = () => {
                             onChange={handleChange}
                             sx={{ backgroundColor: '#ffffff', borderRadius: '4px', width: '50vw' }}
                         />
-                        <IconButton onClick={() => handleRemoveMember(index)} sx={{ ml: 1, border: '2px solid red', borderRadius: '4px', padding: 2 }}>
-                            <RemoveIcon sx={{ color: '#e74c3c' }} />
-                        </IconButton>
+                        {index !== 0 && (
+                            <IconButton onClick={() => handleRemoveMember(index)} sx={{ ml: 1, border: '2px solid red', borderRadius: '4px', padding: 2 }}>
+                                <RemoveIcon sx={{ color: '#e74c3c' }} />
+                            </IconButton>
+                        )}
                     </Box>
                 ))}
                 <Button
@@ -131,7 +142,7 @@ const CreateGroup = () => {
                     Create
                 </Button>
             </Box>
-                  </Container>
+        </Container>
     );
 };
 

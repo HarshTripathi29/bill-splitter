@@ -51,7 +51,6 @@ const Dashboard = () => {
                     <h3 className="text-xl font-bold text-cyan-100">Total Balance</h3>
                     <p className="text-cyan-400 mt-2">$0.00</p>
                 </div>
-                
             </div>
         </div>
     );

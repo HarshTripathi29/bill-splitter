@@ -42,7 +42,7 @@ const Groups = () => {
             <div className="left">
                 <h1 className="text-4xl font-bold text-cyan-800 mb-4">Groups</h1>
                 {groupStatus === 'loading' && <p className="text-red-600">Loading...</p>}
-                {groupStatus === 'failed' && <p className="text-red-600">Error: {error}</p>}
+                {groupStatus === 'failed' && error && <p className="text-red-600">Error: {error.message}</p>}
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                 {groups.map((group) => (
