@@ -13,10 +13,7 @@ const groupSchema = new mongoose.Schema({
         type: [String],
         required: true,
     },
-    currency: {
-        type: String,
-        required: true,
-    },
+   
     category: {
         type: String,
         required: true,

@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const asyncHandler = require('express-async-handler');
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -59,7 +60,36 @@ const logoutUser = (req, res) => {
     res.status(200).json({ message: 'User logged out successfully' });
 };
 
-module.exports = { registerUser, authUser, logoutUser };
+const addFavoriteGroup = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        const { groupId } = req.body;
+        if (!user.favorites.includes(groupId)) {
+            user.favorites.push(groupId);
+        } else {
+            user.favorites = user.favorites.filter(id => id !== groupId);
+        }
+        await user.save();
+        res.status(200).json({ message: 'Favorite groups updated', favorites: user.favorites });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const getFavoriteGroups = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate('favorites');
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json(user.favorites);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = { registerUser, authUser, logoutUser,addFavoriteGroup, getFavoriteGroups  };
 
 
 
@@ -132,7 +162,3 @@ module.exports = { registerUser, authUser, logoutUser };
 // };
 
 // module.exports = { logoutUser, registerUser, authUser };
-
-
-
-module.exports = { registerUser, authUser };

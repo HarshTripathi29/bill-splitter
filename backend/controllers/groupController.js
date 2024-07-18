@@ -3,13 +3,15 @@ const Expense = require('../models/Expense'); // Ensure this line is present
 
 const createGroup = async (req, res) => {
     try {
-        const { name, description, members, currency, category } = req.body;
+        const { name, description, members, category } = req.body;
+
+        // Logging the received data for debugging
+        console.log("Creating group with data:", req.body);
 
         const newGroup = new Group({
             name,
             description,
             members,
-            currency,
             category,
         });
 
@@ -17,9 +19,11 @@ const createGroup = async (req, res) => {
 
         res.status(201).json(newGroup);
     } catch (error) {
+        console.error("Error creating group:", error);  // Improved logging
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 const getAllGroups = async (req, res) => {
