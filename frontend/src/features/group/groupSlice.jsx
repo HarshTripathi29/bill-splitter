@@ -57,17 +57,37 @@ export const fetchGroupDetails = createAsyncThunk(
     }
 );
 
+export const updateExpense = createAsyncThunk('group/updateExpense', async ({ groupId, expenseId, category, totalAmount, paidBy }) => {
+    const response = await axios.put(`/api/groups/${groupId}/expenses/${expenseId}`, { category, totalAmount, paidBy });
+    return response.data;
+});
+
+export const deleteExpense = createAsyncThunk('group/deleteExpense', async ({ groupId, expenseId }) => {
+    await axios.delete(`/api/groups/${groupId}/expenses/${expenseId}`);
+    return { expenseId };
+});
 
 const groupSlice = createSlice({
     name: 'group',
     initialState: {
         groups: [],
         selectedGroup: null,
+        favorites: [], // Add this line
         expenses: [],
         status: 'idle',
         error: null,
     },
-    reducers: {},
+
+    reducers: {
+        toggleFavoriteGroup: (state, action) => {
+            const groupId = action.payload;
+            if (state.favorites.includes(groupId)) {
+                state.favorites = state.favorites.filter(id => id !== groupId);
+            } else {
+                state.favorites.push(groupId);
+            }
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createGroup.pending, (state) => {
@@ -130,8 +150,18 @@ const groupSlice = createSlice({
             .addCase(fetchGroupDetails.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
+            })
+            .addCase(updateExpense.fulfilled, (state, action) => {
+                const index = state.selectedGroup.expenses.findIndex(expense => expense._id === action.payload._id);
+                if (index !== -1) {
+                    state.selectedGroup.expenses[index] = action.payload;
+                }
+            })
+            .addCase(deleteExpense.fulfilled, (state, action) => {
+                state.selectedGroup.expenses = state.selectedGroup.expenses.filter(expense => expense._id !== action.payload.expenseId);
             });
     },
 });
 
+export const { toggleFavoriteGroup } = groupSlice.actions;
 export default groupSlice.reducer;

@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchGroupDetails } from '../features/group/groupSlice';
-import { Container, Typography, Box, Grid } from '@mui/material';
+import { fetchGroupDetails, deleteExpense } from '../features/group/groupSlice';
+import { IconButton } from '@mui/material';
 import CategoryExpenseChart from './CategoryExpenseChart';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AddExpenseModal from './AddExpenseModal';
 
 const GroupDetail = () => {
     const { id } = useParams();
@@ -14,68 +16,96 @@ const GroupDetail = () => {
     const status = useSelector(state => state.group.status);
     const error = useSelector(state => state.group.error);
 
+    const [selectedExpense, setSelectedExpense] = useState(null);
+    const [showExpenseModal, setShowExpenseModal] = useState(false);
+
     useEffect(() => {
         dispatch(fetchGroupDetails(id));
     }, [dispatch, id]);
 
-    // Function to calculate per person split amount
+    const handleEditExpense = (expense) => {
+        setSelectedExpense(expense);
+        setShowExpenseModal(true);
+    };
+
+    const handleDeleteExpense = (expenseId) => {
+        dispatch(deleteExpense({ groupId: id, expenseId }));
+    };
+
+    const handleCloseExpenseModal = () => {
+        setSelectedExpense(null);
+        setShowExpenseModal(false);
+    };
+
     const calculatePerPersonAmount = (totalAmount) => {
         const numMembers = members.length;
         if (numMembers === 0) return 0;
-        return totalAmount / numMembers;
+        return Math.round(totalAmount / numMembers); // Round to the nearest whole number
     };
 
-    // Aggregate expense data by category
-    const expenseData = expenses.reduce((acc, expense) => {
+    const totalExpenses = expenses ? expenses.reduce((acc, expense) => acc + expense.totalAmount, 0) : 0;
+    const expenseData = expenses ? expenses.reduce((acc, expense) => {
         if (acc[expense.category]) {
             acc[expense.category] += expense.totalAmount;
         } else {
             acc[expense.category] = expense.totalAmount;
         }
         return acc;
-    }, {});
+    }, {}) : {};
+
+    const expensePercentageData = Object.entries(expenseData).map(([category, amount]) => ({
+        category,
+        percentage: ((amount / totalExpenses) * 100).toFixed(2),
+    }));
 
     return (
-        <Container sx={{ mt: 4 }}>
-            {status === 'loading' && <Typography sx={{ textAlign: 'center', color: '#e74c3c' }}>Loading...</Typography>}
-            {status === 'failed' && <Typography sx={{ textAlign: 'center', color: '#e74c3c' }}>Error: {error}</Typography>}
-            {!group && <Typography>No group found</Typography>}
+        <div className="mt-4 mx-auto max-w-screen-lg bg-white">
+            {status === 'loading' && <p className="text-center text-red-600">Loading...</p>}
+            {status === 'failed' && <p className="text-center text-red-600">Error: {error}</p>}
+            {!group && <p>No group found</p>}
             {group && (
                 <>
-                    <Box sx={{ p: 2, border: '1px solid #ccc', borderRadius: '12px', mb: 2, boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#34495e', mb: 1 }}>{group.name}</Typography>
-                        <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>{group.description}</Typography>
-                        <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>Members: {members.join(', ')}</Typography>
-                        <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>Currency: {group.currency}</Typography>
-                        <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>Category: {group.category}</Typography>
-                    </Box>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} md={6}>
-                            <Grid container spacing={3}>
-                                {expenses.map(expense => (
-                                    <Grid item key={expense._id} xs={12}>
-                                        <Box sx={{ p: 2, border: '1px solid #ccc', borderRadius: '12px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', position: 'relative' }}>
-                                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#34495e', mb: 1 }}>{expense.category}</Typography>
-                                            <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>Total Amount: {expense.totalAmount}</Typography>
-                                            <Typography variant="body2" sx={{ color: '#7f8c8d', mb: 1 }}>Paid By: {expense.paidBy}</Typography>
-                                            <Typography variant="body2" sx={{ color: '#3498db', mb: 1 }}>Per Person: {calculatePerPersonAmount(expense.totalAmount)}</Typography>
-                                            <Box sx={{ position: 'absolute', top: '10px', right: '10px', width: '50px', height: '50px', bgcolor: '#3498db', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{new Date(expense.date).toLocaleDateString()}</Typography>
-                                            </Box>
-                                        </Box>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <Box sx={{ p: 2, border: '1px solid #ccc', borderRadius: '12px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <CategoryExpenseChart expenseData={expenseData} />
-                            </Box>
-                        </Grid>
-                    </Grid>
+                    <div className="p-4 border bg-cyan-100 rounded-lg mb-4 shadow-lg">
+                        <h2 className="text-3xl font-bold text-cyan-900 mb-2">{group.name}</h2>
+                        <p className="text-gray-800 mb-2">{group.description}</p>
+                        <p className="text-cyan-800 mb-2 border border-cyan-500 p-2 rounded-lg w-fit text-lg">Members: {members.join(', ')}</p>
+                        <p className="text-amber-950 mb-2 bg-amber-400 rounded-xl p-2 w-fit">Category: {group.category}</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            {expenses && expenses.map(expense => (
+                                <div key={expense._id} className="relative p-4 border bg-white border-gray-300 rounded-lg mb-4 shadow-lg">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-2">{expense.category}</h3>
+                                    <p className="text-gray-600 mb-2">Total Amount: {expense.totalAmount}</p>
+                                    <p className="text-gray-600 mb-2">Paid By: {expense.paidBy}</p>
+                                    <p className="text-blue-600 mb-2">Per Person: {calculatePerPersonAmount(expense.totalAmount)}</p>
+                                    
+                                    <div className="absolute top-2 right-2 flex space-x-2">
+                                        <IconButton onClick={() => handleDeleteExpense(expense._id)}>
+                                            <DeleteIcon className="text-cyan-950 absolute top-2 right-2" />
+                                        </IconButton>
+                                    </div>
+                                    
+                                    <div className="absolute bottom-4 right-2 w-20 h-20 bg-amber-200 text-amber-950 rounded-full flex items-center justify-center text-white">
+                                        <p className="text-sm font-bold">{new Date(expense.date).toLocaleDateString()}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex items-center justify-center p-4 border border-gray-300 rounded-lg shadow-lg">
+                            <CategoryExpenseChart expenseData={expensePercentageData} />
+                        </div>
+                    </div>
+                    <AddExpenseModal
+                        groupId={id}
+                        expense={selectedExpense}
+                        open={showExpenseModal}
+                        onClose={handleCloseExpenseModal}
+                        members={members}
+                    />
                 </>
             )}
-        </Container>
+        </div>
     );
 };
 

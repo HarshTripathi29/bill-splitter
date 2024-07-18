@@ -1,15 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Modal, Box, Typography, TextField, Button, Grid, Select, MenuItem } from '@mui/material';
-import { addExpense } from '../features/group/groupSlice';
+import { Modal, Box, Typography, TextField, Button, Grid, MenuItem } from '@mui/material';
+import { addExpense, updateExpense } from '../features/group/groupSlice';
 
-const AddExpenseModal = ({ groupId, open, onClose }) => {
+const AddExpenseModal = ({ groupId, expense, open, onClose }) => {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         category: '',
         totalAmount: '',
         paidBy: '',
     });
+
+    useEffect(() => {
+        if (expense) {
+            setFormData({
+                category: expense.category,
+                totalAmount: expense.totalAmount,
+                paidBy: expense.paidBy,
+            });
+        } else {
+            setFormData({
+                category: '',
+                totalAmount: '',
+                paidBy: '',
+            });
+        }
+    }, [expense]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,21 +34,15 @@ const AddExpenseModal = ({ groupId, open, onClose }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(addExpense({ groupId, ...formData }));
-        setFormData({
-            category: '',
-            totalAmount: '',
-            paidBy: '',
-        });
+        if (expense) {
+            dispatch(updateExpense({ groupId, expenseId: expense._id, ...formData }));
+        } else {
+            dispatch(addExpense({ groupId, ...formData }));
+        }
         onClose(); // Close modal after submitting
     };
 
     const handleClose = () => {
-        setFormData({
-            category: '',
-            totalAmount: '',
-            paidBy: '',
-        });
         onClose(); // Close modal without submitting
     };
 
@@ -57,11 +67,29 @@ const AddExpenseModal = ({ groupId, open, onClose }) => {
                 }}
             >
                 <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', color: '#2c3e50', fontWeight: 'bold' }}>
-                    Add Expense
+                    {expense ? 'Edit Expense' : 'Add Expense'}
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
+                            <TextField
+                                select
+                                fullWidth
+                                label="Expense Category"
+                                name="category"
+                                value={formData.category}
+                                onChange={handleChange}
+                                required
+                                sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
+                            >
+                                {['Entertainment', 'Shopping', 'Food and Drink', 'Home', 'Transport', 'Others'].map((option) => (
+                                    <MenuItem key={option} value={option}>
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12}>
                             <TextField
                                 fullWidth
                                 label="Total Amount"
@@ -73,7 +101,7 @@ const AddExpenseModal = ({ groupId, open, onClose }) => {
                                 sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 fullWidth
                                 label="Paid By"
@@ -83,24 +111,6 @@ const AddExpenseModal = ({ groupId, open, onClose }) => {
                                 required
                                 sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Select
-                                fullWidth
-                                label="Expense Category"
-                                value={formData.category}
-                                onChange={handleChange}
-                                name="category"
-                                required
-                                sx={{ backgroundColor: '#fff', borderRadius: '4px' }}
-                            >
-                                <MenuItem value="Entertainment">Entertainment</MenuItem>
-                                <MenuItem value="Shopping">Shopping</MenuItem>
-                                <MenuItem value="Food and Drink">Food and Drink</MenuItem>
-                                <MenuItem value="Home">Home</MenuItem>
-                                <MenuItem value="Transport">Transport</MenuItem>
-                                <MenuItem value="Others">Others</MenuItem>
-                            </Select>
                         </Grid>
                         <Grid item xs={12}>
                             <Button
@@ -115,7 +125,7 @@ const AddExpenseModal = ({ groupId, open, onClose }) => {
                                     },
                                 }}
                             >
-                                Add Expense
+                                {expense ? 'Update Expense' : 'Add Expense'}
                             </Button>
                             <Button
                                 onClick={handleClose}

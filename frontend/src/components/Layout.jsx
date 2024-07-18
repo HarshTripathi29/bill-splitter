@@ -1,19 +1,14 @@
 import React from 'react';
 import Header from './Header';
-import { Box, CssBaseline } from '@mui/material';
 import Sidebar from './Sidebar';
 
 const Layout = ({ children }) => {
     return (
-        <div>
-            <CssBaseline />
+        <div className="flex h-screen">
             <Sidebar />
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, p: 3, marginLeft: '240px' }}
-            >
+            <div className="flex-1 p-4 ml-5 bg-white">
                 {children}
-            </Box>
+            </div>
         </div>
     );
 };

@@ -8,7 +8,7 @@ export const login = createAsyncThunk('user/login', async ({ email, password }, 
                 'Content-Type': 'application/json',
             },
         };
-        const { data } = await axios.post('/api/users/login', { email, password }, config);
+        const { data } = await axios.post('http://localhost:5000/api/users/login', { email, password }, config);
         localStorage.setItem('userInfo', JSON.stringify(data));
         return data;
     } catch (error) {
@@ -23,13 +23,14 @@ export const register = createAsyncThunk('user/register', async ({ name, email, 
                 'Content-Type': 'application/json',
             },
         };
-        const { data } = await axios.post('/api/users/register', { name, email, password }, config);
+        const { data } = await axios.post('http://localhost:5000/api/users/register', { name, email, password }, config);
         localStorage.setItem('userInfo', JSON.stringify(data));
         return data;
     } catch (error) {
         return rejectWithValue(error.response && error.response.data.message ? error.response.data.message : error.message);
     }
 });
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -70,6 +71,7 @@ const userSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             });
+           
     },
 });
 

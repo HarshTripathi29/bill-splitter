@@ -1,34 +1,58 @@
 import React from 'react';
-import { Doughnut } from 'react-chartjs-2';
-import {
-    Chart as ChartJS,
-    ArcElement,
-    Tooltip,
-    Legend
-} from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import { Box, Typography } from '@mui/material';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(
-    ArcElement,
-    Tooltip,
-    Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
-const CategoryExpenseChart = () => {
+const CategoryExpenseChart = ({ expenseData }) => {
     const data = {
-        labels: ['Rent', 'Groceries', 'Utilities', 'Entertainment'],
+        labels: expenseData.map(expense => expense.category),
         datasets: [
             {
-                label: 'Category Expenses',
-                data: [300, 50, 100, 80],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                label: '% of Expenses',
+                data: expenseData.map(expense => expense.percentage),
+                backgroundColor: [
+                    '#ff6384',
+                    '#36a2eb',
+                    '#ffce56',
+                    '#4bc0c0',
+                    '#9966ff',
+                    '#ff9f40',
+                ],
+                hoverBackgroundColor: [
+                    '#ff6384',
+                    '#36a2eb',
+                    '#ffce56',
+                    '#4bc0c0',
+                    '#9966ff',
+                    '#ff9f40',
+                ],
             },
         ],
     };
 
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return `${context.label}: ${context.raw}%`;
+                    },
+                },
+            },
+        },
+    };
+
     return (
-        <div style={{ width: '500px', height: '500px' }}>
-            <Doughnut data={data} />
-        </div>
+        <Box>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#34495e', mb: 2, textAlign: 'center' }}>Expense Distribution</Typography>
+            <Pie data={data} options={options} />
+        </Box>
     );
 };
 

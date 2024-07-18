@@ -1,0 +1,56 @@
+.steps-list {
+    position: relative;
+}
+
+.step-item {
+    position: relative;
+    z-index: 1;
+}
+
+.step-number {
+    z-index: 2;
+}
+
+.steps-list .thread {
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    border-left: 2px dashed #075985;
+    z-index: 0;
+}
+
+.feature-card {
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease-in-out;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 3rem;
+}
+
+.feature-title {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-description {
+    color: #7f8c8d;
+    font-size: 1rem;
+}
+
+footer {
+    background-color: #082f49;
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}

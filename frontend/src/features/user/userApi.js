@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/users';
+
 
 const login = async (email, password) => {
     const config = {
@@ -9,7 +9,7 @@ const login = async (email, password) => {
         },
     };
 
-    const { data } = await axios.post(`${API_URL}/login`, { email, password }, config);
+    const { data } = await axios.post(`http://localhost:5000/api/users/login`, { email, password }, config);
     return data;
 };
 
@@ -20,7 +20,7 @@ const register = async (name, email, password) => {
         },
     };
 
-    const { data } = await axios.post(`${API_URL}/register`, { name, email, password }, config);
+    const { data } = await axios.post(`http://localhost:5000/api/users/register`, { name, email, password }, config);
     return data;
 };
 

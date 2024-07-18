@@ -10,19 +10,24 @@ import Groups from './components/Groups';
 import CreateGroup from './components/CreateGroup';
 import About from './components/About';
 import GroupDetail from './components/GroupDetail';
+import HomePage from './components/HomePage';
+import './index.css';
+
+
 
 const App = () => {
     return (
         <Provider store={store}>
             <Router>
                 <Routes>
-                    <Route path="/login" element={<UserLogin />} />
                     <Route path="/register" element={<UserRegister />} />
-                    <Route path="/" element={<Layout><Dashboard /></Layout>} />
+                    <Route path="/login" element={<UserLogin />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
                     <Route path="/groups" element={<Layout><Groups /></Layout>} />
                     <Route path="/create-group" element={<Layout><CreateGroup /></Layout>} />
                     <Route path="/about" element={<Layout><About /></Layout>} />
-                    <Route path="/groups/:id" element={<Layout><GroupDetail /></Layout>} /> {/* New route */}
+                    <Route path="/groups/:id" element={<Layout><GroupDetail /></Layout>} />
                 </Routes>
             </Router>
         </Provider>
