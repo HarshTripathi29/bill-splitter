@@ -58,6 +58,8 @@ const GroupDetail = () => {
         percentage: ((amount / totalExpenses) * 100).toFixed(2),
     }));
 
+    const userId = useSelector(state => state.auth.user.id);
+
     return (
         <div className="mt-4 mx-auto max-w-screen-lg bg-white">
             {status === 'loading' && <p className="text-center text-red-600">Loading...</p>}
@@ -79,13 +81,16 @@ const GroupDetail = () => {
                                     <p className="text-gray-600 mb-2">Total Amount: {expense.totalAmount}</p>
                                     <p className="text-gray-600 mb-2">Paid By: {expense.paidBy}</p>
                                     <p className="text-blue-600 mb-2">Per Person: {calculatePerPersonAmount(expense.totalAmount)}</p>
-                                    
+                                    {expense.paidBy === userId ? (
+                                        <p className="text-green-600 mb-2">Owed to You: {expense.perPersonAmount * (members.length - 1)}</p>
+                                    ) : (
+                                        <p className="text-red-600 mb-2">You Owe: {expense.perPersonAmount}</p>
+                                    )}
                                     <div className="absolute top-2 right-2 flex space-x-2">
                                         <IconButton onClick={() => handleDeleteExpense(expense._id)}>
                                             <DeleteIcon className="text-cyan-950 absolute top-2 right-2" />
                                         </IconButton>
                                     </div>
-                                    
                                     <div className="absolute bottom-4 right-2 w-20 h-20 bg-amber-200 text-amber-950 rounded-full flex items-center justify-center">
                                         <p className="text-sm font-bold">{new Date(expense.date).toLocaleDateString()}</p>
                                     </div>
